@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authorized-keys
+  labels:
+    app: borgserver
+data:
+  authorized-keys: |-
+{{- range $client := $.Values.clients }}
+    command=
+  {{- with $client.isAdmin -}}
+     "cd /backup; borg serve --restrict-to-path /backup"
+  {{- else -}}
+    "mkdir -p /backup/{{ $client.name }} ; cd /backup/{{ $client.name }}; borg serve --restrict-to-path /backup/{{ $client.name }} {{ $.Values.borg.serve_args }}"
+  {{- end }} {{ $client.type }} {{ $client.key }} {{ $client.name }}
+{{- end }}
