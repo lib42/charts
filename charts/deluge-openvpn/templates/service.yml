@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .Chart.Name }}-service"
+  labels:
+    app: {{ .Chart.Name }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  type: {{ .Values.deluge.service.type | default "LoadBalancer" }}
+  selector:
+    app: "{{  .Chart.Name }}-selector"
+  ports:
+  - name: "http-deluge-web"
+    protocol: TCP
+    targetPort: 8112
+    port: {{ .Values.deluge.httpPort | default "8112" }}
+  - name: "tcp-deluge"
+    protocol: TCP
+    targetPort: 58846
+    port: {{ .Values.deluge.tcpPort | default "58846" }}

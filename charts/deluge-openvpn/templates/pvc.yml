@@ -1,0 +1,16 @@
+{{- if .Values.deluge.config.createPvc }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ .Chart.Name }}-deluge-config"
+  labels:
+    chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Mi
+  storageClass: {{ .Values.deluge.config.storageClass | default "" }}
+{{- end }}

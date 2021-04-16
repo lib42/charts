@@ -1,0 +1,18 @@
+---
+kind: ConfigMap
+metadata:
+  name: route-script
+apiVersion: v1
+data:
+  route-override.sh: |-
+     #!/bin/sh
+     VPN_GATEWAY=$(ip r show dev tun0| awk '/via/ {print $NF}'| tail -n1)
+     ip route del default
+     ip route add default via "$VPN_GATEWAY"
+     {{- if .Values.openvpn.gatewayIsNameserver }}
+     echo "nameserver $VPN_GATEWAY" > /etc/resolv.conf
+     {{- end }}
+     echo "Route Updated:"
+     ip r
+     echo "Nameservers:"
+     cat /etc/resolv.conf
