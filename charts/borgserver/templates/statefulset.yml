@@ -9,7 +9,7 @@ spec:
   serviceName: {{ .Chart.Name }}
   selector:
     matchLabels:
-      app: borgserver
+      app: {{ .Chart.Name }}
   replicas: 1
   template:
     metadata:
@@ -39,6 +39,7 @@ spec:
       initContainers:
       - name: {{ .Chart.Name }}-init
         image: {{ .Values.image.init_repository }}:{{ .Values.image.init_tag }}
+        command: [ "/init.sh" ]
         volumeMounts:
         - name: hostkeys
           mountPath: /keys

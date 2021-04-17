@@ -3,9 +3,10 @@ image:
   repository: lib42/borgserver
   tag: latest
 
-  init_repository: lib42/borgserver-init
+  init_repository: lib42/borgserver
   init_tag: latest
 
+# Right now only hostPort & hostPath supported
 hostPort: 2222
 hostPath: /data/backup/lan
 borg:
@@ -13,13 +14,14 @@ borg:
   serve_args: "--append-only"
   #data_dir: /backup
 
-clients:
-  - name: admin
-    isAdmin: true
-    type: ssh-rsa
-    key: AAAAB3NzaC1yc2EAAAADAQABAAABAQClJ8m1BBbWxnC9zmmLef4lbfRd+UjWd1fsQoPs+O+i/C3X70hBGIWELSbwwvloSc/R8v141pQnXBxftD0UQ6xtCWqSuQ1OHYnicbtSorpQq/6W9qb/4SiAMIOfC4LL0S70F9BbnTx3uYJfSVI7b/HARlHb6VFg62Tt5ousQkrC/H/7cO2atTsh/iAGUSPdSwA18ILaKLZufL3dLyVSxWD1MkwyBt9b8KVdqfYMVlPif9P5fw523EMTvgXXyd/Dzy/oC9dy6hlkmFvm4u8FL2mHbYUNKZ6wbGX1JGyVzdVJn3TA2cYL3mDsxjDsML4ArS9PEjayApgQ7epzu+aZT4DL
-  - name: noldbook
-    type: ssh-rsa
-    key: AAAAB3NzaC1yc2EAAAADAQABAAABAQClJ8m1BBbWxnC9zmmLef4lbfRd+UjWd1fsQoPs+O+i/C3X70hBGIWELSbwwvloSc/R8v141pQnXBxftD0UQ6xtCWqSuQ1OHYnicbtSorpQq/6W9qb/4SiAMIOfC4LL0S70F9BbnTx3uYJfSVI7b/HARlHb6VFg62Tt5ousQkrC/H/7cO2atTsh/iAGUSPdSwA18ILaKLZufL3dLyVSxWD1MkwyBt9b8KVdqfYMVlPif9P5fw523EMTvgXXyd/Dzy/oC9dy6hlkmFvm4u8FL2mHbYUNKZ6wbGX1JGyVzdVJn3TA2cYL3mDsxjDsML4ArS9PEjayApgQ7epzu+aZT4DL
+# Add your client pubkeys here:
+clients: []
+#  - name: admin
+#    isAdmin: true
+#    type: ssh-rsa
+#    key: AAAABfC4LL0S70F9BbnTx3uYJfSVI7b/HAR....
+#  - name: another-client
+#    type: ssh-rsa
+#    key: AAAAB3NzaC1yc2EAAAADAQABAAABAQClJ8m1....
 
 terminationGracePeriodSeconds: 100
