@@ -21,7 +21,7 @@ deluge:
   tcpPort: 58846
 
   service:
-    type: LoadBalancer
+    type: ClusterIP
 
 openvpn:
   image: dperson/openvpn-client
