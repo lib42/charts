@@ -7,11 +7,21 @@ image:
   init_tag: latest
 
 # Right now only hostPort & hostPath supported
-hostPort: 2222
-hostPath: /data/backup/lan
+service:
+  # ToDo: ClusterIP/LB/NodePort
+  type: hostPort
+  hostPort: 2222
+
+persistence:
+  # TODO: PVC
+  type: hostPath
+  hostPath: /data/backup/lan
+
 borg:
   admin: ""
   serve_args: "--append-only"
+
+  ## If you mounted your persistent storage somewhere else:
   #data_dir: /backup
 
 # Add your client pubkeys here:
@@ -23,5 +33,8 @@ clients: []
 #  - name: another-client
 #    type: ssh-rsa
 #    key: AAAAB3NzaC1yc2EAAAADAQABAAABAQClJ8m1....
+
+podSecurityPolicy:
+  enabled: true
 
 terminationGracePeriodSeconds: 100

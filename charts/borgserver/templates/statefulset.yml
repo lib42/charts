@@ -21,10 +21,12 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
       volumes:
+        {{- if eq .Values.persistence.type "hostPath" }}
         - name: repos
           hostPath:
-            path: {{ .Values.hostPath }}
+            path: {{ .Values.persistence.hostPath }}
             type: Directory
+        {{- end }}
         - name: hostkeys
           persistentVolumeClaim:
             claimName: borgserver-hostkeys
@@ -47,10 +49,12 @@ spec:
       - name: borgserver
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         ports:
+        {{- if eq .Values.service.type "hostPort" }}
         - containerPort: 2222
-          hostPort: {{ .Values.hostPort | default 2222 }}
+          hostPort: {{ .Values.service.hostPort | default 2222 }}
           protocol: TCP
           name: borgserver
+        {{- end }}
         volumeMounts:
         - name: hostkeys
           mountPath: /keys
