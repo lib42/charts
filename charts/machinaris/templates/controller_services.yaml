@@ -1,0 +1,32 @@
+{{- if $.Values.machinaris.controller }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "service.controller" $ }}
+spec:
+  type: {{ $.Values.machinaris.service.type | default "ClusterIP" }}
+  ports:
+  - port: {{ $.Values.machinaris.service.controllerPort | default 8927 }}
+    targetPort: api
+    protocol: TCP
+    name: api
+  selector:
+    app.kubernetes.io/name: {{ include "common.fullname" $ }}-{{ $.Values.machinaris.controller }}
+    app.kubernetes.io/instance: {{ $.Values.machinaris.controller }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "service.http" $ }}
+spec:
+  type: {{ $.Values.machinaris.service.type | default "ClusterIP" }}
+  ports:
+  - port: {{ $.Values.machinaris.service.httpPort | default 8926 }}
+    targetPort: http
+    protocol: TCP
+    name: http
+  selector:
+    app.kubernetes.io/name: {{ include "common.fullname" $ }}-{{ $.Values.machinaris.controller }}
+    app.kubernetes.io/instance: {{ $.Values.machinaris.controller }}
+{{- end }}

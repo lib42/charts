@@ -1,0 +1,215 @@
+{{- range $.Values.worker.forks }}
+  {{- if .enabled }}
+  {{- $volumes := $.Values.worker.persistence }}
+  {{- if .persistence }}
+    {{- $volumes = .persistence }}
+  {{- end }}
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "common.fullname" $ }}-{{ .name }}
+  labels:
+    app.kubernetes.io/name: {{ include "common.fullname" $ }}-{{ .name }}
+    app.kubernetes.io/instance: {{ .name }}
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  updateStrategy:
+    type: {{ .updateStrategy | default "OnDelete" }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "common.fullname" $ }}-{{ .name }}
+      app.kubernetes.io/instance: {{ .name }}
+  serviceName: {{ include "common.fullname" $ }}-{{ .name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "common.fullname" $ }}-{{ .name }}
+        app.kubernetes.io/instance: {{ .name }}
+    spec:
+      serviceAccountName: default
+      automountServiceAccountToken: false
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: true
+      containers:
+        {{- if $.Values.worker.metrics.enabled }}
+          {{- $certPath := "/root/.chia" }}
+          {{- if and (ne "chia" .name) (ne "nchain" .name) }}
+            {{- $certPath = (printf "/root/.chia/%s" .name ) -}}
+          {{- end }}
+        - name: metrics-exporter
+          image: {{ $.Values.worker.metrics.image | default "nold360/chia-fork-exporter:latest" }}
+          env:
+            - name: CHIA_FORK
+              value: {{ .name }}
+            - name: FULL_NODE_CERT
+              value: {{ $certPath }}/mainnet/config/ssl/full_node/private_full_node.crt
+            - name: FULL_NODE_KEY
+              value: {{ $certPath }}/mainnet/config/ssl/full_node/private_full_node.key
+          volumeMounts:
+          - name: config
+            mountPath: /root/.chia
+          ports:
+          - name: metrics
+            containerPort: 9133
+        {{- end }}
+        - name: {{ include "common.fullname" $ }}-{{ .name }}
+          image: {{ .image }}:{{ .tag | default $.Values.worker.image.tag | default "test" }}
+          imagePullPolicy: {{ $.Values.imagePullPolicy | default "Always" }}
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - cp /mnemonic/mnemonic.txt /root/.chia/mnemonic.txt
+          {{- if or $.Values.worker.resources .resources}}
+          resources:
+            {{-  $.Values.worker.resources | merge (.resources | default dict) | toYaml | nindent 12 }}
+          {{- end }}
+          env:
+            - name: blockchains
+              value: {{ .blockchains | default .name }}
+            - name: mode
+              value: {{ .mode | default "fullnode" }}
+            - name: controller_api_port
+              value: {{ $.Values.machinaris.service.controllerPort | default 8927 | quote }}
+            - name: controller_host
+            {{- if eq $.Values.machinaris.controller .name }}
+              value: localhost
+            - name: worker_address
+              value: 127.0.0.1
+            {{- else}}
+              value: {{ include "service.controller" $ | quote }}
+            - name: worker_address
+              value: {{ include "common.fullname" $ }}-{{ .name }}-api
+            {{- end }}
+            - name: worker_api_port
+              value: {{ .ports.api | quote }}
+            - name: plots_dir
+              value: {{ include "env.plotdir" $volumes.plots }}
+            {{- if $.Values.env }}
+              {{- toYaml $.Values.env | nindent 12 }}
+            {{- end }}
+            {{- if not .plotter | default false }}
+            - name: bladebit_skip_build
+              value: "true"
+            - name: madmax_skip_build
+              value: "true"
+            {{- end }}
+          volumeMounts:
+            - name: config
+              mountPath: /root/.chia
+          {{- if $volumes.plots }}
+            {{- include "volumes.mount" $volumes.plots | nindent 12 }}
+          {{- end }}
+          {{- if $volumes.temp }}
+            {{- include "volumes.mount" $volumes.temp | nindent 12 }}
+          {{- end }}
+          {{- if or $.Values.wallet.mnemonic $.Values.wallet.existingSecret }}
+            - name: mnemonic
+              mountPath: /mnemonic
+          {{- end }}
+          livenessProbe:
+            httpGet:
+              port: {{ .ports.api }}
+              path: /ping
+            initialDelaySeconds: 30
+            failureThreshold: 3
+            timeoutSeconds: 1
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              port: {{ .ports.api }}
+              path: /ping
+            initialDelaySeconds: 30
+            failureThreshold: 3
+            timeoutSeconds: 1
+            periodSeconds: 10
+          startupProbe:
+            httpGet:
+              port: {{ .ports.api }}
+              path: /ping
+            initialDelaySeconds: 30
+            failureThreshold: 30
+            timeoutSeconds: 1
+            periodSeconds: 5
+          ports:
+          - containerPort: {{ .ports.api }}
+            name: api
+          {{- if eq $.Values.machinaris.controller .name }}
+          - containerPort: {{ $.Values.machinaris.service.httpPort }}
+            name: http
+          {{- end }}
+          {{- if .ports.custom }}
+            {{- toYaml .ports.custom | nindent 10 }}
+          {{- end }}
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ include "common.fullname" $ }}-{{ .name }}
+        {{- if $volumes.plots }}
+          {{- include "volumes.volumes" $volumes.plots | nindent 8 }}
+        {{- end }}
+        {{- if $volumes.temp }}
+          {{- include "volumes.volumes" $volumes.temp | nindent 8 }}
+        {{- end }}
+        {{- if or $.Values.wallet.mnemonic $.Values.wallet.existingSecret }}
+        - name: mnemonic
+          secret:
+            secretName: {{ $.Values.wallet.existingSecret | default "mnemonic" }}
+            items:
+              - key: mnemonic.txt
+                path: mnemonic.txt
+        {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "common.fullname" $ }}-{{ .name }}-api
+spec:
+  type: {{ .ports.serviceType | default "ClusterIP" }}
+  ports:
+  - port: {{ .ports.api }}
+    targetPort: api
+    protocol: TCP
+    name: api
+  selector:
+    app.kubernetes.io/name: {{ include "common.fullname" $ }}-{{ .name }}
+    app.kubernetes.io/instance: {{ .name }}
+{{- if $.Values.worker.metrics.enabled }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "common.fullname" $ }}-{{ .name }}-metrics
+  {{- with $.Values.worker.metrics.serviceAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4}}
+  {{- end }}
+spec:
+  type: {{ $.Values.worker.metrics.serviceType | default "ClusterIP" }}
+  ports:
+  - port: {{ $.Values.worker.metrics.servicePort | default 9133 }}
+    targetPort: metrics
+    protocol: TCP
+    name: metrics
+  selector:
+    app.kubernetes.io/name: {{ include "common.fullname" $ }}-{{ .name }}
+    app.kubernetes.io/instance: {{ .name }}
+{{- end }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "common.fullname" $ }}-{{ .name }}
+spec:
+  accessModes:
+    - {{ $.Values.worker.persistence.config.accessMode }}
+  resources:
+    requests:
+      storage: {{ $.Values.worker.persistence.config.size | quote }}
+  storageClassName: {{ $.Values.worker.persistence.config.storageClass | quote }}
+  {{- end }}
+{{- end }}

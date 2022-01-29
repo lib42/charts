@@ -1,0 +1,55 @@
+{{- define "common.fullname" -}}
+{{- .Chart.Name }}-{{ .Release.Name }}
+{{- end }}
+
+{{- define "service.controller" -}}
+{{- include "common.fullname" . }}-controller
+{{- end }}
+
+{{- define "service.http" -}}
+{{- include "common.fullname" . }}-http
+{{- end }}
+
+{{- define "volumes.mount" -}}
+  {{- $params := dict "type" "volumeMounts" "data" . }}
+  {{- include "volumes.build" $params }}
+{{- end }}
+
+{{- define "volumes.volumes" -}}
+  {{- $params := dict "type" "volumes" "data" . }}
+  {{- include "volumes.build" $params }}
+{{- end }}
+
+{{- define "env.plotdir" -}}
+  {{- $params := dict "type" "plotdir" "data" . }}
+  {{- include "volumes.build" $params }}
+{{- end }}
+
+{{/* Collect all Volumes an print data based on "type"
+  params:
+    dict:
+      type: [volumeMounts|volumes|plotdir]
+      data: $.Values.worker.persistence.plots
+*/}}
+{{- define "volumes.build" -}}
+  {{- $plotDirs := "" }}
+  {{- range .data }}
+    {{- $mountPath := .mountPath | trimSuffix "/" }}
+    {{- range .hostPaths }}
+      {{- $fullMountPath := (printf "%s%s" $mountPath .) }}
+      {{- $plotDirs = (printf "%s:%s" $plotDirs $fullMountPath ) }}
+      {{- $name := $fullMountPath | trimPrefix "/" | replace "/" "-" }}
+      {{- if eq $.type "volumes" }}
+- name: {{ $name }}
+  hostPath:
+    path: {{ . }}
+      {{- else if eq $.type "volumeMounts" }}
+- name: {{ $name }}
+  mountPath: {{ $fullMountPath }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  {{- if eq $.type "plotdir" }}
+    {{- $plotDirs | trimPrefix ":" | quote }}
+  {{- end }}
+{{- end }}

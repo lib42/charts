@@ -1,0 +1,240 @@
+# Machinaris Helm Chart
+#
+imagePullPolicy: Always
+
+# Secret mnemonic that will be used to generate your wallet
+# Keep this save & don't share it with anyone:
+wallet:
+  # Plain text mnemonic:
+  mnemonic: ""
+
+  # Or precreated mnemonic secret
+  # Create using: kubectl create secret generic mnemonic --from-file=mnemonic.txt=mnemonic.txt
+  existingSecret: mnemonic
+
+# Global environment for every pod
+env:
+  - name: TZ
+    value: UTC
+
+# Ingress controller for machinaris web ui
+ingress:
+  enabled: false
+  labels: {}
+  annotations: {}
+  # cert-manager.io/cluster-issuer: "cluster-issuer"
+  # traefik.ingress.kubernetes.io/router.tls: 'true'
+  tls:
+    enabled: false
+  host: "machinaris.domain"
+
+
+# Machinaris controller configuration
+machinaris:
+
+  # IMPORTANT: Choose which worker will become controller!
+  # If you are farming/plotting chia anyways, you can keep it like this:
+  controller: chia
+
+  # HTTP/API Service for the controller pod
+  service:
+    type: ClusterIP
+    httpPort: 8926
+    controllerPort: 8927
+
+  # Plotman metrics can be scraped using prometheus, too:
+  apiServiceAnnotations: {}
+  # prometheus.io/scrape: 'true'
+  # prometheus.io/port: '8926'
+  # prometheus.io/path: '/metrics/plotman'
+
+# Global worker configuration
+worker:
+  # Tag to use for all worker images, default: test
+  image:
+    tag: test
+
+  persistence:
+    # One Config PVC per fork, incl. the blockchain & configs
+    config:
+      size: "50Gi"
+      storageClass: ""
+      accessMode: "ReadWriteOnce"
+
+    # Plots & Temp are only supported as hostPath for now
+    # Every path is a mountpoint on the HOST system
+    # Every path will be mounted under "mountPath" inside the pod & added to env[plot_dir]
+    #
+    # Will be added to every worker, except there is fork.{name}.persistence defined
+    #
+    plots:
+      - mountPath: /plots
+        hostPaths:
+          - /chia/farm/0
+          - /chia/farm/1
+          - /chia/farm/2
+    temp:
+      - mountPath: /plotting
+        hostPaths:
+          - /chia/temp
+
+  # Enables prometheus metrics exporter sidecar container for every fork
+  # Will run as sidecar container & automatically be configured for the worker fork
+  metrics:
+    enabled: false
+    image: nold360/chia-fork-exporter
+    serviceAnnotations: {}
+    # prometheus.io/scrape: 'true'
+    # prometheus.io/port: '9133'
+    servicePort: 9133
+    serviceType: ClusterIP
+
+  # Default resource requests / limits for all workers
+  resources: {}
+  # requests:
+  #   memory: "256Mi"
+  #   cpu: "250m"
+  # limits:
+  #   memory: "4Gi"
+  #   cpu: "2000m"
+
+  # List of all chia forks
+  # Set "enabled: true" if you want to use it
+  #
+  forks:
+    # Name of the chia fork
+  - name: chia
+    # Enable this fork? Default: False
+    enabled: true
+    # Enable plotting function? Default: False
+    plotter: true
+    # Node mode [fullnode|harvester|farmer] - Default: fullnode
+    mode: fullnode
+    # Image to use
+    image: ghcr.io/guydavis/machinaris
+
+    # API and fullnode ports:
+    # API will be exposed as ClusterIP, "custom" ports are hostPorts
+    ports:
+      api: 8927
+      custom:
+      - containerPort: 8444
+        hostPort: 8444
+    # We can also overwrite the resources here:
+    #resources:
+    #  limits:
+    #    memory: "16Gi"
+    #    cpu: "6000m"
+
+  - name: chives
+    enabled: false
+    plotter: true
+    image: ghcr.io/guydavis/machinaris-chives
+    mode: fullnode
+    ports:
+      api: 8931
+
+    # Persistent plot/temp mounts can be overwritten, too:
+    persistence:
+      plots:
+        - mountPath: /plots
+          hostPaths:
+            - /chia/farm/0/chives
+            - /chia/farm/1/chives
+            - /chia/farm/2/chives
+      temp:
+        - mountPath: /plotting
+          hostPaths:
+            - /chia/temp
+
+  - name: hddcoin
+    enabled: false
+    mode: fullnode
+    image: ghcr.io/guydavis/machinaris-hddcoin
+    ports:
+      api: 8930
+
+  - name: flax
+    enabled: false
+    mode: fullnode
+    image: ghcr.io/guydavis/machinaris-flax
+    ports:
+      api: 8928
+
+
+  # Silicoin image currently unavailable
+  - name: silicoin
+    enabled: false
+    image: ghcr.io/guydavis/machinaris-silicoin
+    mode: fullnode
+    ports:
+      api: 8934
+      custom:
+      - containerPort: 22222
+        hostPort: 22222
+
+  - name: staicoin
+    enabled: false
+    image: ghcr.io/guydavis/machinaris-staicoin
+    mode: fullnode
+    ports:
+      api: 8934
+
+  - name: btcgreen
+    enabled: false
+    image: ghcr.io/guydavis/machinaris-btcgreen
+    mode: fullnode
+    ports:
+      api: 8938
+
+  - name: maize
+    enabled: false
+    image: ghcr.io/guydavis/machinaris-maize
+    mode: fullnode
+    ports:
+      api: 8933
+
+  - name: nchain
+    enabled: false
+    image: ghcr.io/guydavis/machinaris-nchain
+    mode: fullnode
+    ports:
+      api: 8929
+
+  - name: stor
+    enabled: false
+    image: ghcr.io/guydavis/machinaris-stor
+    mode: fullnode
+    ports:
+      api: 8935
+
+  - name: shibgreen
+    enabled: false
+    image: ghcr.io/guydavis/machinaris-shibgreen
+    mode: fullnode
+    ports:
+      api: 8939
+
+  - name: flora
+    enabled: false
+    image: nold360/machinaris-flora
+    mode: fullnode
+    ports:
+      api: 8932
+
+  - name: cryptodoge
+    enabled: false
+    image: nold360/machinaris-cryptodoge
+    mode: fullnode
+    ports:
+      api: 8937
+
+  - name: mmx
+    enabled: false
+    image: ghcr.io/guydavis/machinaris-mmx
+    mode: fullnode
+    ports:
+      api: 8940
+      custom:
+      - containerPort: 12333
+        hostPort: 12333

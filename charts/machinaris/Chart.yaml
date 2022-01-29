@@ -1,0 +1,5 @@
+apiVersion: v2
+appVersion: "0.6.9"
+description: Machinaris - Chia Fork Farmer/Plotter with Web UI
+name: machinaris
+version: 0.1.0
