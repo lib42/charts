@@ -1,0 +1,40 @@
+# BorgServer on Kubernetes
+image:
+  repository: lib42/borgserver
+  tag: latest
+
+  init_repository: lib42/borgserver
+  init_tag: latest
+
+# Right now only hostPort & hostPath supported
+service:
+  # ToDo: ClusterIP/LB/NodePort
+  type: hostPort
+  hostPort: 2222
+
+persistence:
+  # TODO: PVC
+  type: hostPath
+  hostPath: /data/backup/lan
+
+borg:
+  admin: ""
+  serve_args: "--append-only"
+
+  ## If you mounted your persistent storage somewhere else:
+  #data_dir: /backup
+
+# Add your client pubkeys here:
+clients: []
+#  - name: admin
+#    isAdmin: true
+#    type: ssh-rsa
+#    key: AAAABfC4LL0S70F9BbnTx3uYJfSVI7b/HAR....
+#  - name: another-client
+#    type: ssh-rsa
+#    key: AAAAB3NzaC1yc2EAAAADAQABAAABAQClJ8m1....
+
+podSecurityPolicy:
+  enabled: true
+
+terminationGracePeriodSeconds: 100

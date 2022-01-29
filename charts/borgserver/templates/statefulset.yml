@@ -1,0 +1,65 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "{{ .Chart.Name }}-statefulset"
+  labels:
+    chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+spec:
+  serviceName: {{ .Chart.Name }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      volumes:
+        {{- if eq .Values.persistence.type "hostPath" }}
+        - name: repos
+          hostPath:
+            path: {{ .Values.persistence.hostPath }}
+            type: Directory
+        {{- end }}
+        - name: hostkeys
+          persistentVolumeClaim:
+            claimName: borgserver-hostkeys
+        - name: authorized-keys
+          configMap:
+            name: authorized-keys
+            items:
+              - key: authorized-keys
+                path: authorized-keys
+            defaultMode: 0600
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds | default 100 }}
+      initContainers:
+      - name: {{ .Chart.Name }}-init
+        image: {{ .Values.image.init_repository }}:{{ .Values.image.init_tag }}
+        command: [ "/init.sh" ]
+        volumeMounts:
+        - name: hostkeys
+          mountPath: /keys
+      containers:
+      - name: borgserver
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        ports:
+        {{- if eq .Values.service.type "hostPort" }}
+        - containerPort: 2222
+          hostPort: {{ .Values.service.hostPort | default 2222 }}
+          protocol: TCP
+          name: borgserver
+        {{- end }}
+        volumeMounts:
+        - name: hostkeys
+          mountPath: /keys
+        - name: repos
+          mountPath: /backup
+        - name: authorized-keys
+          mountPath: /home/borg/.ssh/authorized_keys
+          subPath: authorized-keys
