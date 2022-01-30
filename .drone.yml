@@ -29,3 +29,6 @@ steps:
   - 'git commit -m "Update: Helm Repo"'
   - "git remote set-url origin git@github.com:lib42/charts.git"
   - git push -f --set-upstream origin repo
+  when:
+    branch:
+    - master
