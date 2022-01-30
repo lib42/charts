@@ -55,15 +55,15 @@
 {{- end }}
 
 {{- define "fork.configdir" -}}
-  {{- $certPath := "/root/.chia" }}
+  {{- $certPath := "/root/.chia/mainnet" }}
   {{- if eq "nchain" . }}
     {{- $certPath = "/root/.chia/ext9"}}
   {{- else if eq "silicoin" . }}
-    {{- $certPath = "/root/.chia/sit"}}
+    {{- $certPath = "/root/.chia/sit/mainnet"}}
   {{- else if eq "staicoin" . }}
-    {{- $certPath = "/root/.chia/stai"}}
+    {{- $certPath = "/root/.chia/stai/mainnet"}}
   {{- else if ne "chia" . }}
-    {{- $certPath = (printf "/root/.chia/%s" . ) -}}
+    {{- $certPath = (printf "/root/.chia/%s/mainnet" . ) -}}
   {{- end }}
   {{- $certPath -}}
 {{- end }}
