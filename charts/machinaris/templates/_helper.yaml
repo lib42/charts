@@ -53,3 +53,17 @@
     {{- $plotDirs | trimPrefix ":" | quote }}
   {{- end }}
 {{- end }}
+
+{{- define "fork.configdir" -}}
+  {{- $certPath := "/root/.chia" }}
+  {{- if eq "nchain" . }}
+    {{- $certPath = "/root/.chia/ext9"}}
+  {{- else if eq "silicoin" . }}
+    {{- $certPath = "/root/.chia/sit"}}
+  {{- else if eq "staicoin" . }}
+    {{- $certPath = "/root/.chia/stai"}}
+  {{- else if ne "chia" . }}
+    {{- $certPath = (printf "/root/.chia/%s" . ) -}}
+  {{- end }}
+  {{- $certPath -}}
+{{- end }}

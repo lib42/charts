@@ -34,19 +34,15 @@ spec:
       enableServiceLinks: true
       containers:
         {{- if $.Values.worker.metrics.enabled }}
-          {{- $certPath := "/root/.chia" }}
-          {{- if and (ne "chia" .name) (ne "nchain" .name) }}
-            {{- $certPath = (printf "/root/.chia/%s" .name ) -}}
-          {{- end }}
         - name: metrics-exporter
           image: {{ $.Values.worker.metrics.image | default "nold360/chia-fork-exporter:latest" }}
           env:
             - name: CHIA_FORK
               value: {{ .name }}
             - name: FULL_NODE_CERT
-              value: {{ $certPath }}/mainnet/config/ssl/full_node/private_full_node.crt
+              value: {{ include "fork.configdir" .name }}/mainnet/config/ssl/full_node/private_full_node.crt
             - name: FULL_NODE_KEY
-              value: {{ $certPath }}/mainnet/config/ssl/full_node/private_full_node.key
+              value: {{ include "fork.configdir" .name }}/mainnet/config/ssl/full_node/private_full_node.key
           volumeMounts:
           - name: config
             mountPath: /root/.chia
