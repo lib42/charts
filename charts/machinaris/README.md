@@ -17,6 +17,10 @@ This is a Chart for [Machinaris](https://machinaris.app). A Chia[-fork] farmer &
 - Plot/-ting drives are `hostPath`-only
 - Services are `ClusterIP`-only [= Ingress required for Web UI]
 
+## Configuration
+
+See: [values.yaml](values.yaml)
+
 ## Contributing
 
 This chart has been created for my usecase. So feel free to open issues or PRs. Any kind of contribution is welcome!

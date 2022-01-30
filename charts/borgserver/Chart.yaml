@@ -1,4 +1,16 @@
 apiVersion: v2
-description: A Helm chart for lib42/borgserver
 name: borgserver
 version: 0.1.0
+appVersion: "1.1.16"
+description: Chart for a BorgBackup Server using lib42/borgserver
+keywords:
+- backup
+- borgbackup
+- ssh
+home: https://github.com/lib42/charts
+source:
+- https://github.com/lib42/docker-borgserver
+- https://borgbackup.readthedocs.io/en/stable
+maintainers:
+- name: nold
+  email: nold@gnu.one
