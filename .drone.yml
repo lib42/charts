@@ -1,0 +1,31 @@
+---
+kind: pipeline
+type: kubernetes
+name: default
+
+steps:
+- name: helm-repo
+  image: alpine/helm
+  environment:
+    USE_SSH: "true"
+    GIT_USER: $DRONE_COMMIT_AUTHOR
+    GITHUB_PRIVATE_KEY:
+      from_secret: ssh_key
+  commands:
+  - apk add --no-cache openssh-client
+  - mkdir -p $HOME/.ssh
+  - ssh-keyscan -t rsa github.com >> $HOME/.ssh/known_hosts
+  - echo "$GITHUB_PRIVATE_KEY" > "$HOME/.ssh/id_rsa"
+  - chmod 0600 $HOME/.ssh/id_rsa
+  - git fetch --all -v
+  - git switch -c repo
+  - git reset --hard origin/master
+  - mkdir pkg
+  - cd pkg
+  - helm package ../charts/*
+  - cd -
+  - "helm repo index --url=https://lib42.github.io/charts ."
+  - git add .
+  - 'git commit -m "Update: Helm Repo"'
+  - "git remote set-url origin git@github.com:lib42/charts.git"
+  - git push -f --set-upstream origin repo
