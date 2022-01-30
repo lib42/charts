@@ -1,0 +1,3 @@
+---
+exclude: ['charts']
+theme: jekyll-theme-cayman
