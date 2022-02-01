@@ -1,0 +1,37 @@
+# Values for lib42/ara Helm Chart
+image: docker.io/recordsansible/ara-api:latest
+pullPolicy: IfNotPresent
+
+# See: https://ara.readthedocs.io/en/latest/api-configuration.html
+env:
+  ARA_ALLOWED_HOSTS: "[ '127.0.0.1', 'localhost', '::1' ]"
+  ARA_CORS_ORIGIN_WHITELIST:  "['http://127.0.0.1:8000', 'http://localhost:8000']"
+  ARA_CORS_ORIGIN_REGEX_WHITELIST: "[ '.*' ]"
+  ARA_DATABASE_ENGINE: django.db.backends.sqlite3
+  ARA_DATABASE_HOST: None
+  ARA_DATABASE_NAME: /opt/ara/server-ansible.sqlite
+  ARA_DATABASE_PASSWORD: None
+  ARA_DATABASE_PORT: None
+  ARA_DATABASE_USER: None
+  ARA_DATABASE_OPTIONS: "{}"
+
+  ARA_EXTERNAL_AUTH: "False"
+  ARA_READ_LOGIN_REQUIRED: "False"
+  ARA_WRITE_LOGIN_REQUIRED: "False"
+  ARA_TIME_ZONE: Europe/Berlin
+
+## Use a secret for ARA_DATABASE_PASSWORD:
+#envFromSecret: ara-secret-env
+
+# Ingress Controller
+ingress:
+  enabled: false
+  host: ara.domain
+
+# Resource limits/request
+resources: {}
+
+# Persistent volume for SQLite DB:
+persistentVolumes:
+  enabled: false
+  storageClassName: ""

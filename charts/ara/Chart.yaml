@@ -1,0 +1,17 @@
+apiVersion: v2
+appVersion: 1.0.0
+description: ARA Records Ansible and makes it easier to understand and troubleshoot.
+home: https://ara.recordsansible.org/
+icon: https://github.com/ansible-community/ara/raw/master/doc/source/_static/ara-with-icon.png
+keywords:
+- awx
+- ansible
+- ara
+maintainers:
+- email: nold@gnu.one
+  name: Gerrit Pannek
+name: ara
+sources:
+- https://github.com/ansible-community/ara
+- https://github.com/lib42/charts
+version: 0.1.0

@@ -1,0 +1,3 @@
+{{- define "common.fullname" -}}
+  {{- $.Chart.Name }}-{{ $.Release.Name }}
+{{- end }}

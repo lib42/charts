@@ -1,0 +1,87 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "common.fullname" $ }}
+  labels:
+    app: ara
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ara
+  template:
+    metadata:
+      labels:
+        app: ara
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 2000
+        fsGroup: 2000
+      containers:
+      - image: {{ $.Values.image }}
+        imagePullPolicy: {{ $.Values.pullPolicy | default "IfNotPresent" }}
+        name: ara
+        {{- if $.Values.env }}
+        env:
+        {{- range $k, $v := $.Values.env }}
+          - name: {{ $k }}
+            value: {{ $v | default "None" | quote }}
+          {{- end }}
+        {{- end }}
+        {{- if $.Values.resources }}
+        resources:
+          {{-  toYaml $.Values.resources | nindent 8 }}
+        {{- end }}
+        {{- if $.Values.envFromSecret }}
+        envFrom:
+        - secretRef:
+            name: {{ $.Values.envFromSecret }}
+        {{- end }}
+        volumeMounts:
+        - mountPath: /opt/ara
+          name: ara
+        ports:
+          - containerPort: 8000
+        livenessProbe:
+          httpGet:
+            port: 8000
+            path: /api/v1/
+            httpHeaders:
+              - name: Host
+                value: {{ $.Values.ingress.host }}
+          initialDelaySeconds: 30
+          failureThreshold: 3
+          timeoutSeconds: 1
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            port: 8000
+            path: /api/v1/
+            httpHeaders:
+              - name: Host
+                value: {{ $.Values.ingress.host }}
+          initialDelaySeconds: 30
+          failureThreshold: 3
+          timeoutSeconds: 1
+          periodSeconds: 10
+        startupProbe:
+          httpGet:
+            port: 8000
+            path: /api/v1/
+            httpHeaders:
+              - name: Host
+                value: {{ $.Values.ingress.host }}
+          initialDelaySeconds: 30
+          failureThreshold: 30
+          timeoutSeconds: 1
+      volumes:
+      - name: ara
+        {{- if $.Values.persistentVolumes.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ include "common.fullname" $ }}-pvc
+        {{- else }}
+        emptyDir: {}
+        {{- end }}
