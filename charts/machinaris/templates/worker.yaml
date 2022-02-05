@@ -33,7 +33,7 @@ spec:
       dnsPolicy: ClusterFirst
       enableServiceLinks: true
       containers:
-        {{- if $.Values.worker.metrics.enabled }}
+        {{- if and ($.Values.worker.metrics.enabled) (ne .name "mmx") }}
         - name: metrics-exporter
           image: {{ $.Values.worker.metrics.image | default "nold360/chia-fork-exporter:latest" }}
           env:
@@ -174,7 +174,7 @@ spec:
   selector:
     app.kubernetes.io/name: {{ include "common.fullname" $ }}-{{ .name }}
     app.kubernetes.io/instance: {{ .name }}
-{{- if $.Values.worker.metrics.enabled }}
+{{- if and ($.Values.worker.metrics.enabled) (ne .name "mmx") }}
 ---
 apiVersion: v1
 kind: Service
