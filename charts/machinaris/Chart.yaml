@@ -1,6 +1,6 @@
 apiVersion: v2
 name: machinaris
-version: 0.1.1
+version: 0.1.2
 appVersion: "0.6.9"
 description: An Easy-to-use WebUI for Chia Crypto Plotting and Farming
 keywords:
