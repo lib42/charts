@@ -1,0 +1,115 @@
+# Machinaris Helm Chart
+#
+imagePullPolicy: Always
+
+# Secret mnemonic that will be used to generate your wallet
+# Keep this save & don't share it with anyone:
+wallet:
+  # Plain text mnemonic:
+  mnemonic: ""
+
+  # Or precreated mnemonic secret
+  # Create using: kubectl create secret generic mnemonic --from-file=mnemonic.txt=mnemonic.txt
+  existingSecret: mnemonic
+
+# Global environment for every pod
+env:
+  - name: TZ
+    value: UTC
+
+# Ingress controller for machinaris web ui
+ingress:
+  enabled: false
+  labels: {}
+  annotations: {}
+  # cert-manager.io/cluster-issuer: "cluster-issuer"
+  # traefik.ingress.kubernetes.io/router.tls: 'true'
+  tls:
+    enabled: false
+  host: "machinaris.domain"
+
+
+# Machinaris controller configuration
+machinaris:
+
+  # IMPORTANT: Choose which worker will become controller!
+  # If you are farming/plotting chia anyways, you can keep it like this:
+  controller: chia
+
+  # HTTP/API Service for the controller pod
+  service:
+    type: ClusterIP
+    httpPort: 8926
+    controllerPort: 8927
+
+  # Plotman metrics can be scraped using prometheus, too:
+  apiServiceAnnotations: {}
+  # prometheus.io/scrape: 'true'
+  # prometheus.io/port: '8926'
+  # prometheus.io/path: '/metrics/plotman'
+
+# Global worker configuration
+worker:
+  # Tag to use for all worker images, default: test
+  image:
+    tag: test
+
+  persistence:
+    # One Config PVC per fork, incl. the blockchain & configs
+    config:
+      size: "50Gi"
+      storageClass: ""
+      accessMode: "ReadWriteOnce"
+
+    # Plots & Temp are only supported as hostPath for now
+    # Every path is a mountpoint on the HOST system
+    # Every path will be mounted under "mountPath" inside the pod & added to env[plot_dir]
+    #
+    # Will be added to every worker, except there is fork.{name}.persistence defined
+    #
+    plots:
+      - mountPath: /plots
+        hostPaths:
+          - /chia/farm/0
+          - /chia/farm/1
+          - /chia/farm/2
+    temp:
+      - mountPath: /plotting
+        hostPaths:
+          - /chia/temp
+          - /chia/temp2
+
+  # Enables prometheus metrics exporter sidecar container for every fork
+  # Will run as sidecar container & automatically be configured for the worker fork
+  metrics:
+    enabled: true
+    image: nold360/chia-fork-exporter
+    serviceAnnotations: {}
+    # prometheus.io/scrape: 'true'
+    # prometheus.io/port: '9133'
+    servicePort: 9133
+    serviceType: ClusterIP
+
+  # Default resource requests / limits for all workers
+  resources: {}
+
+  # List of all chia forks
+  # Set "enabled: true" if you want to use it
+  #
+  forks:
+  - name: chia
+    enabled: true
+    image: ghcr.io/guydavis/machinaris
+    mode: fullnode
+    ports:
+      api: 1234
+
+  - name: mmx
+    enabled: true
+    image: ghcr.io/guydavis/machinaris-mmx
+    mode: fullnode
+    ports:
+      api: 8940
+      custom:
+      - containerPort: 12333
+        hostPort: 12333

@@ -1,0 +1,44 @@
+suite: test worker metrics
+values:
+  - ./values/metrics_test.yaml
+templates:
+  - worker.yaml
+tests:
+  - it: chia should contain metrics
+    documentIndex: 0
+    asserts:
+      - isKind:
+          of: StatefulSet
+      - matchRegex:
+          path: metadata.name
+          pattern: .*-chia$
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: nold360/chia-fork-exporter
+
+  - it: mmx should not contain metrics
+    documentIndex: 4
+    asserts:
+      - isKind:
+          of: StatefulSet
+      - matchRegex:
+          path: metadata.name
+          pattern: .*-mmx$
+      - notEqual:
+          path: spec.template.spec.containers[0].image
+          value: nold360/chia-fork-exporter
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/guydavis/machinaris-mmx:test
+
+  - it: chia should contain metrics service
+    documentIndex: 2
+    asserts:
+      - isKind:
+          of: Service
+      - matchRegex:
+          path: metadata.name
+          pattern: .*-metrics$
+      - equal:
+          path: spec.ports[0].port
+          value: 9133
