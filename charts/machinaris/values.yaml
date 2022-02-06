@@ -161,8 +161,6 @@ worker:
     ports:
       api: 8928
 
-
-  # Silicoin image currently unavailable
   - name: silicoin
     enabled: false
     image: ghcr.io/guydavis/machinaris-silicoin
@@ -217,14 +215,14 @@ worker:
 
   - name: flora
     enabled: false
-    image: nold360/machinaris-flora
+    image: ghcr.io/guydavis/machinaris-flora
     mode: fullnode
     ports:
       api: 8932
 
   - name: cryptodoge
     enabled: false
-    image: nold360/machinaris-cryptodoge
+    image: ghcr.io/guydavis/machinaris-cryptodoge
     mode: fullnode
     ports:
       api: 8937
