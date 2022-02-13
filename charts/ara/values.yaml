@@ -2,6 +2,7 @@
 image: docker.io/recordsansible/ara-api:latest
 pullPolicy: IfNotPresent
 
+# You can configure ARA using Environment Variables
 # See: https://ara.readthedocs.io/en/latest/api-configuration.html
 env: {}
 #  ARA_ALLOWED_HOSTS: "[ '127.0.0.1', 'localhost', '::1' ]"
@@ -25,6 +26,11 @@ env: {}
 # Ingress Controller
 ingress:
   enabled: false
+
+  # Ingress Annotations:
+  annotations: {}
+
+  # Domain for ara:
   host: ara.domain
 
 # Resource limits/request
