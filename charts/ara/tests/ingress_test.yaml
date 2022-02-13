@@ -1,0 +1,17 @@
+suite: test ingress
+templates:
+  - ingress.yaml
+tests:
+  - it: should contain ingress
+    set:
+      ingress.enabled: true
+    asserts:
+      - isKind:
+          of: Ingress
+
+  - it: should contain ingress
+    set:
+      ingress.enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0

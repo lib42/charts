@@ -1,0 +1,17 @@
+suite: test pvc
+templates:
+  - pvc.yaml
+tests:
+  - it: should contain pvc
+    set:
+      persistence.enabled: true
+    asserts:
+      - isKind:
+          of: PersistentVolumeClaim
+
+  - it: should not contain pvc
+    set:
+      persistence.enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
