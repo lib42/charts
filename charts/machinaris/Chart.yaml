@@ -1,11 +1,14 @@
 apiVersion: v2
 name: machinaris
-version: 0.1.2
-appVersion: "0.6.9"
+version: 0.2.0
+appVersion: "0.7.1"
 description: An Easy-to-use WebUI for Chia Crypto Plotting and Farming
 keywords:
 - blockchain
 - chia
+- chives
+- mmx
+- crypto
 - mining
 icon: https://github.com/guydavis/machinaris/raw/main/web/static/machinaris.png
 home: https://github.com/lib42/charts

@@ -30,12 +30,8 @@ ingress:
 
 
 # Machinaris controller configuration
+# Controller is always the chia fullnode!
 machinaris:
-
-  # IMPORTANT: Choose which worker will become controller!
-  # If you are farming/plotting chia anyways, you can keep it like this:
-  controller: chia
-
   # HTTP/API Service for the controller pod
   service:
     type: ClusterIP
@@ -69,14 +65,14 @@ worker:
     #
     plots:
       - mountPath: /plots
-        hostPaths:
-          - /chia/farm/0
-          - /chia/farm/1
-          - /chia/farm/2
+        hostPaths: []
+      # - /chia/farm/0
+      # - /chia/farm/1
+      # - /chia/farm/2
     temp:
       - mountPath: /plotting
-        hostPaths:
-          - /chia/temp
+        hostPaths: []
+        # - /chia/temp
 
   # Enables prometheus metrics exporter sidecar container for every fork
   # Will run as sidecar container & automatically be configured for the worker fork
@@ -105,6 +101,7 @@ worker:
     # Name of the chia fork
   - name: chia
     # Enable this fork? Default: False
+    # Chia always has to be enabled!
     enabled: true
     # Enable plotting function? Default: False
     plotter: true

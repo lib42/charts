@@ -72,7 +72,7 @@ spec:
             - name: controller_api_port
               value: {{ $.Values.machinaris.service.controllerPort | default 8927 | quote }}
             - name: controller_host
-            {{- if eq $.Values.machinaris.controller .name }}
+            {{- if eq .name "chia" }}
               value: localhost
             - name: worker_address
               value: 127.0.0.1
@@ -134,7 +134,7 @@ spec:
           ports:
           - containerPort: {{ .ports.api }}
             name: api
-          {{- if eq $.Values.machinaris.controller .name }}
+          {{- if eq .name "chia" }}
           - containerPort: {{ $.Values.machinaris.service.httpPort }}
             name: http
           {{- end }}
