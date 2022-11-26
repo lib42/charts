@@ -1,0 +1,31 @@
+---
+pipeline:
+  helm-repo:
+    image: alpine/helm
+    environment:
+      USE_SSH: "true"
+      GIT_USER: $DRONE_COMMIT_AUTHOR
+    commands:
+    - apk add --no-cache openssh-client
+    - mkdir -p $$HOME/.ssh
+    - ssh-keyscan -t rsa github.com >> $$HOME/.ssh/known_hosts
+    - echo "$$GITHUB_DEPLOY_KEY" > "$$HOME/.ssh/id_rsa"
+    - chmod 0600 $$HOME/.ssh/id_rsa
+    - git fetch --all -v
+    - git switch -C repo
+    - git reset --hard origin/master
+    - mkdir pkg
+    - cd pkg
+    - helm package ../charts/*
+    - cd -
+    - "helm repo index --url=https://lib42.github.io/charts ."
+    - git add .
+    - git status
+    - git config --global user.email "noreply@lib42.github.io"
+    - git config --global user.name "Woodpecker-CI"
+    - 'git commit -m "Update: Helm Repo"'
+    - "git remote set-url origin git@github.com:lib42/charts.git"
+    - git push -f --set-upstream origin repo
+    when:
+      branch: master
+    secrets: [ "github_deploy_key" ]
