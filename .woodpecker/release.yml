@@ -27,7 +27,8 @@ pipeline:
     - "git remote set-url origin git@github.com:lib42/charts.git"
     - git push -f --set-upstream origin repo
     when:
-      - branch: main
+      - event: push
+        branch: main
         path:
         - charts/**
         - .woodpecker/release.yml
