@@ -1,0 +1,65 @@
+apiVersion: v1
+entries:
+  ara:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-27T20:56:43.699744776Z"
+    description: ARA Records Ansible and makes it easier to understand and troubleshoot.
+    digest: ecc799635064bda5e71e930ded345d38abb2dc53cbc073bb737c066991d9e464
+    home: https://ara.recordsansible.org/
+    icon: https://github.com/ansible-community/ara/raw/master/doc/source/_static/ara-with-icon.png
+    keywords:
+    - awx
+    - ansible
+    - ara
+    maintainers:
+    - email: nold@gnu.one
+      name: Gerrit Pannek
+    name: ara
+    sources:
+    - https://github.com/ansible-community/ara
+    - https://github.com/lib42/charts
+    urls:
+    - https://lib42.github.io/charts/pkg/ara-0.1.3.tgz
+    version: 0.1.3
+  borgserver:
+  - apiVersion: v2
+    appVersion: 1.1.16
+    created: "2022-11-27T20:56:43.700483047Z"
+    description: Chart for a BorgBackup Server using lib42/borgserver
+    digest: 3c37c921fa225701cc4cda719d8ae2090887728c0605b79606c2d6ce3697c9ce
+    home: https://github.com/lib42/charts
+    keywords:
+    - backup
+    - borgbackup
+    - ssh
+    maintainers:
+    - email: nold@gnu.one
+      name: nold
+    name: borgserver
+    urls:
+    - https://lib42.github.io/charts/pkg/borgserver-0.1.0.tgz
+    version: 0.1.0
+  machinaris:
+  - apiVersion: v2
+    appVersion: 0.7.1
+    created: "2022-11-27T20:56:43.702631426Z"
+    description: An Easy-to-use WebUI for Chia Crypto Plotting and Farming
+    digest: adb67d27d0f035124e09261fbeddc63eaac87c3a381affdb5a340d5c8982ace2
+    home: https://github.com/lib42/charts
+    icon: https://github.com/guydavis/machinaris/raw/main/web/static/machinaris.png
+    keywords:
+    - blockchain
+    - chia
+    - chives
+    - mmx
+    - crypto
+    - mining
+    maintainers:
+    - email: nold@gnu.one
+      name: nold
+    name: machinaris
+    urls:
+    - https://lib42.github.io/charts/pkg/machinaris-0.2.0.tgz
+    version: 0.2.0
+generated: "2022-11-27T20:56:43.698522476Z"
