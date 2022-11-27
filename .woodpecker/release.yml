@@ -13,7 +13,7 @@ pipeline:
     - chmod 0600 $$HOME/.ssh/id_rsa
     - git fetch --all -v
     - git switch -C repo
-    - git reset --hard origin/master
+    - git reset --hard origin/main
     - mkdir pkg
     - cd pkg
     - helm package ../charts/*
@@ -27,5 +27,10 @@ pipeline:
     - "git remote set-url origin git@github.com:lib42/charts.git"
     - git push -f --set-upstream origin repo
     when:
-      branch: master
+      - branch: main
+        path:
+        - charts/**
+        - .woodpecker/release.yml
+      - event: [ "manual", "cron" ]
+
     secrets: [ "github_deploy_key" ]
