@@ -1,0 +1,26 @@
+{
+  "rebaseWhen": "conflicted",
+  "assignees": ["@nold360"],
+  "extends": [
+    "config:base",
+    "docker:enableMajor",
+    ":semanticCommits"
+  ],
+  "kubernetes": {
+    "fileMatch": [".+\\.ya?ml(.j2)?$"]
+  },
+  "labels": ["renovate"],
+  "major": {
+    "labels": ["major", "renovate"]
+  },
+  "minor": {
+    "labels": ["minor", "renovate"]
+  },
+  "patch": {
+    "labels": ["patch", "renovate"]
+  },
+  "pin": {
+    "labels": ["pin", "renovate"]
+  },
+  "pinDigests": true
+}
