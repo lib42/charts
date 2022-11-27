@@ -1,0 +1,25 @@
+---
+pipeline:
+  pr-lint:
+    image: alpine/helm
+    environment:
+      USE_SSH: "true"
+      GIT_USER: $DRONE_COMMIT_AUTHOR
+    commands:
+    - git fetch --all
+    - git diff main
+    - "export CHART=$(git diff --name-only master | awk -F/ '/^charts/ { print $$2 }' | head -n1)"
+    - "echo Chart: $${CHART}"
+    - >
+      RET=0
+      if [ -n "$$CHART" ] ; then
+        cd charts/${CHART}
+        helm dependency build
+        helm lint
+        RET=$?
+      fi
+      exit $$RET
+    when:
+      - event: [ "pull_request" ]
+        path:
+        - charts/**
