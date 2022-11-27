@@ -1,0 +1,115 @@
+---
+image:
+  repository: lib42/deluge
+  tag: 2.1.1-r6
+
+# Main Container will run web-server. You could use another UI, too
+command: [ "/usr/bin/deluge-web" ]
+args: [ "-d", "-c", "/config", "-L", "info" ]
+
+
+podSecurityContext:
+  fsGroup: 1000
+
+securityContext:
+  runAsNonRoot: true
+  privileged: false
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
+
+ingress:
+  main:
+    enabled: false
+    #annotations:
+    #  cert-manager.io/cluster-issuer: "vault-issuer"
+    #  traefik.ingress.kubernetes.io/router.tls: 'true'
+    #  nginx.ingress.kubernetes.io/proxy-body-size: 50m
+    #hosts:
+    #  - host: deluge.local
+    #    paths:
+    #      - path: /
+    #        pathType: Prefix
+    #tls:
+    #  - secretName: deluge-tls
+    #    hosts:
+    #       - deluge.local
+
+service:
+  main:
+    enabled: true
+    ports:
+      http:
+        port: 8112
+
+# User & Group ID
+env:
+  PUID: 1000
+  GUID: 1000
+
+persistence:
+  config:
+    enabled: false
+    mountPath: /config
+    size: 10M
+
+  ## example used hostpath instead
+  #downloads:
+  #  enabled: true
+  #  type: hostPath
+  #  hostPath: /data/torrent
+  #  mountPath: /downloads
+
+  startupProbe:
+    initialDelaySeconds: 600
+    periodSeconds: 120
+    failureThreshold: 6
+
+## VPN
+addons:
+  vpn:
+    enabled: false
+
+    #env:
+    #  VPN_SERVICE_PROVIDER: mullvad
+    #  VPN_TYPE: openvpn
+
+    #  DNS_KEEP_NAMESERVER: "on"
+    # DOT: "on"
+    # FIREWALL: "on"
+    # FIREWALL_INPUT_PORTS: "8112,8000"
+    # FIREWALL_VPN_INPUT_PORTS: 61086
+
+    securityContext:
+      capabilities:
+        add:
+          - NET_ADMIN
+
+    livenessProbe:
+      httpGet:
+        path: /v1/openvpn/status
+        port: 8000
+      initialDelaySeconds: 30
+      periodSeconds: 30
+
+# This will create the initial start config for deluge
+initContainers:
+  init-config:
+    image: lib42/deluge:2.1.1-r6
+    command: ["/bin/sh"]
+    args: [ "-c", "([ ! -f /config/core.conf ] && cp -v /defaults/core.conf /config/core.conf) || true"]
+    volumeMounts:
+    - name: config
+      mountPath: /config
+
+# The deluge daemon will be running as a sidecar container:
+additionalContainers:
+  deluge-daemon:
+    image: lib42/deluge:2.1.1-r6
+    volumeMounts:
+    - name: config
+      mountPath: /config
+    #- name: downloads
+    #  mountPath: /downloads
