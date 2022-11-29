@@ -1,31 +1,20 @@
 ---
 pipeline:
   helm-repo:
-    image: alpine/helm
-    environment:
-      USE_SSH: "true"
-      GIT_USER: $DRONE_COMMIT_AUTHOR
+    image: quay.io/helmpack/chart-releaser
     commands:
-    - apk add --no-cache openssh-client
-    - mkdir -p $$HOME/.ssh
-    - ssh-keyscan -t rsa github.com >> $$HOME/.ssh/known_hosts
-    - echo "$$GITHUB_DEPLOY_KEY" > "$$HOME/.ssh/id_rsa"
-    - chmod 0600 $$HOME/.ssh/id_rsa
-    - git fetch --all -v
-    - git switch -C repo
-    - git reset --hard origin/main
-    - mkdir pkg
-    - cd pkg
-    - helm package ../charts/*
-    - cd -
-    - "helm repo index --url=https://lib42.github.io/charts ."
-    - git add .
-    - git status
     - git config --global user.email "noreply@lib42.github.io"
     - git config --global user.name "Woodpecker-CI"
-    - 'git commit -m "Update: Helm Repo"'
-    - "git remote set-url origin git@github.com:lib42/charts.git"
-    - git push -f --set-upstream origin repo
+    - mkdir -p ~/.config/helm
+    - cp .helmrepos.yaml ~/.config/helm/repositories.yaml
+
+    - cr package charts/*
+    - cr upload --owner lib42 --git-repo charts --token $${GH_TOKEN} --skip-existing
+
+    - git fetch --all
+    - git checkout origin/repo
+
+    - cr index --owner lib42 --git-repo charts --token $${GH_TOKEN} --pages-branch repo --package-path .cr-release-packages --index-path index.yaml --push
     when:
       - event: push
         branch: main
@@ -33,5 +22,4 @@ pipeline:
         - charts/**
         - .woodpecker/release.yml
       - event: [ "manual", "cron" ]
-
-    secrets: [ "github_deploy_key" ]
+    secrets: [ "gh_token" ]
