@@ -40,6 +40,23 @@ entries:
     urls:
     - https://lib42.github.io/charts/pkg/borgserver-0.1.0.tgz
     version: 0.1.0
+  deluge:
+  - apiVersion: v2
+    created: "2022-11-29T15:34:53.641163456Z"
+    dependencies:
+    - name: common
+      repository: https://bjw-s.github.io/helm-charts
+      version: 1.1.3
+    description: Deluge Torrent Client & Webinterface
+    digest: d2d35d28ea1bbfdd3096aa233ea85a56b26d824847a41f2268bf006b3efdb7ed
+    kubeVersion: '>=1.22.0-0'
+    maintainers:
+    - email: nold@gnu.one
+      name: nold
+    name: deluge
+    urls:
+    - https://github.com/lib42/charts/releases/download/deluge-1.0.2/deluge-1.0.2.tgz
+    version: 1.0.2
   machinaris:
   - apiVersion: v2
     appVersion: 0.7.1
@@ -62,4 +79,4 @@ entries:
     urls:
     - https://lib42.github.io/charts/pkg/machinaris-0.2.0.tgz
     version: 0.2.0
-generated: "2022-11-27T20:56:43.698522476Z"
+generated: "2022-11-29T15:34:53.832395185Z"
