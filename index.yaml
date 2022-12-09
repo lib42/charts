@@ -42,6 +42,22 @@ entries:
     version: 0.1.0
   deluge:
   - apiVersion: v2
+    created: "2022-12-09T15:02:49.91042679Z"
+    dependencies:
+    - name: common
+      repository: https://bjw-s.github.io/helm-charts
+      version: 1.2.0
+    description: Deluge Torrent Client & Webinterface
+    digest: 63cf385ae49e55c65b951746b623c16db8ea644d640eb87e19292c3ffbd689e9
+    kubeVersion: '>=1.22.0-0'
+    maintainers:
+    - email: nold@gnu.one
+      name: nold
+    name: deluge
+    urls:
+    - https://github.com/lib42/charts/releases/download/deluge-1.1.0/deluge-1.1.0.tgz
+    version: 1.1.0
+  - apiVersion: v2
     created: "2022-11-29T15:34:53.641163456Z"
     dependencies:
     - name: common
@@ -79,4 +95,4 @@ entries:
     urls:
     - https://lib42.github.io/charts/pkg/machinaris-0.2.0.tgz
     version: 0.2.0
-generated: "2022-11-29T15:34:53.832395185Z"
+generated: "2022-12-09T15:02:50.114569265Z"
