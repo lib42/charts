@@ -1,7 +1,7 @@
 ---
 image:
   repository: lib42/deluge
-  tag: 2
+  tag: "2"
 
 # Main Container will run web-server. You could use another UI, too
 command: [ "/usr/local/bin/deluge-web" ]
