@@ -1,10 +1,10 @@
 ---
 image:
   repository: lib42/deluge
-  tag: 2.1.1-r6
+  tag: 2
 
 # Main Container will run web-server. You could use another UI, too
-command: [ "/usr/bin/deluge-web" ]
+command: [ "/usr/local/bin/deluge-web" ]
 args: [ "-d", "-c", "/config", "-L", "info" ]
 
 
@@ -97,7 +97,7 @@ addons:
 # This will create the initial start config for deluge
 initContainers:
   init-config:
-    image: lib42/deluge:2.1.1-r6
+    image: lib42/deluge:2
     command: ["/bin/sh"]
     args: [ "-c", "([ ! -f /config/core.conf ] && cp -v /defaults/core.conf /config/core.conf) || true"]
     volumeMounts:
@@ -107,7 +107,7 @@ initContainers:
 # The deluge daemon will be running as a sidecar container:
 additionalContainers:
   deluge-daemon:
-    image: lib42/deluge:2.1.1-r6
+    image: lib42/deluge:2
     volumeMounts:
     - name: config
       mountPath: /config
