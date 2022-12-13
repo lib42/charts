@@ -50,20 +50,6 @@ controller:
   replicas: 1
   strategy: RollingUpdate
 
-podSecurityContext:
-  runAsUser: 31
-  runAsGroup: 31
-  fsGroup: 31
-
-securityContext:
-  runAsNonRoot: true
-  privileged: false
-  readOnlyRootFilesystem: true
-  allowPrivilegeEscalation: false
-  capabilities:
-    drop:
-    - ALL
-
 ingress:
   main:
     enabled: false
@@ -89,29 +75,12 @@ service:
         port: 3128
 
 persistence:
-  config:
-    name: '{{ include "bjw-s.common.lib.chart.names.fullname" . -}}-config'
-    enabled: true
-    type: configMap
-    mountPath: /etc/squid/squid.conf
-    subPath: squid.conf
-
   cache:
     enabled: true
     type: emptyDir
     mountPath: /var/cache/squid
 
-  varrun:
-    enabled: true
-    type: emptyDir
-    mountPath: /var/run
-
   varlog:
     enabled: true
     type: emptyDir
     mountPath: /var/log/squid
-
-## VPN
-addons:
-  vpn:
-    enabled: false
