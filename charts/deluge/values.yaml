@@ -3,22 +3,8 @@ image:
   repository: lib42/deluge
   tag: "2"
 
-# Main Container will run web-server. You could use another UI, too
-command: [ "/usr/local/bin/deluge-web" ]
-args: [ "-d", "-c", "/config", "-L", "info" ]
-
-
-podSecurityContext:
-  fsGroup: 1000
-
-securityContext:
-  runAsNonRoot: true
-  privileged: false
-  readOnlyRootFilesystem: true
-  allowPrivilegeEscalation: false
-  capabilities:
-    drop:
-    - ALL
+#podSecurityContext:
+#  fsGroup: 1000
 
 ingress:
   main:
@@ -56,16 +42,18 @@ persistence:
     size: 10M
 
   ## example used hostpath instead
-  #downloads:
-  #  enabled: true
-  #  type: hostPath
-  #  hostPath: /data/torrent
-  #  mountPath: /downloads
+  downloads:
+    enabled: false
+    type: hostPath
+    hostPath: /data/torrent
+    mountPath: /downloads
 
-  startupProbe:
-    initialDelaySeconds: 600
-    periodSeconds: 120
-    failureThreshold: 6
+  # This will be used for deluge plugins:
+  cache:
+    enabled: false
+    type: emptyDir
+    mountPath: /home/deluge/.cache
+
 
 ## VPN
 addons:
@@ -93,23 +81,3 @@ addons:
         port: 8000
       initialDelaySeconds: 30
       periodSeconds: 30
-
-# This will create the initial start config for deluge
-initContainers:
-  init-config:
-    image: lib42/deluge:2
-    command: ["/bin/sh"]
-    args: [ "-c", "([ ! -f /config/core.conf ] && cp -v /defaults/core.conf /config/core.conf) || true"]
-    volumeMounts:
-    - name: config
-      mountPath: /config
-
-# The deluge daemon will be running as a sidecar container:
-additionalContainers:
-  deluge-daemon:
-    image: lib42/deluge:2
-    volumeMounts:
-    - name: config
-      mountPath: /config
-    #- name: downloads
-    #  mountPath: /downloads
