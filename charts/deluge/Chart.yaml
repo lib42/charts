@@ -2,7 +2,7 @@
 apiVersion: v2
 description: Deluge Torrent Client & Webinterface
 name: deluge
-version: 1.1.1
+version: 1.2.0
 kubeVersion: ">=1.22.0-0"
 maintainers:
   - name: nold
