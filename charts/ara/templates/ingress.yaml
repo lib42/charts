@@ -16,6 +16,6 @@ spec:
             name: {{ include "common.fullname" $ }}-service
             port:
               number: 8000
-        path: /
+        path: {{ $.Values.ingress.path }}
         pathType: Prefix
 {{- end }}
