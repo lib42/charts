@@ -33,6 +33,9 @@ ingress:
   # Domain for ara:
   host: ara.domain
 
+  # Ingress path (has to be changed if ARA_BASE_PATH is non-default).
+  path: /
+
 # Resource limits/request
 resources: {}
 
