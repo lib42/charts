@@ -1,4 +1,4 @@
-{{- if $.Values.persistence.enabled }}
+{{- if $.Values.persistentVolumes.enabled }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
