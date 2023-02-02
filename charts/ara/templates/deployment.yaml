@@ -48,7 +48,7 @@ spec:
         livenessProbe:
           httpGet:
             port: 8000
-            path: /api/v1/
+            path: {{ $.Values.probePath }}
             httpHeaders:
               - name: Host
                 value: {{ $.Values.ingress.host }}
@@ -59,7 +59,7 @@ spec:
         readinessProbe:
           httpGet:
             port: 8000
-            path: /api/v1/
+            path: {{ $.Values.probePath }}
             httpHeaders:
               - name: Host
                 value: {{ $.Values.ingress.host }}
@@ -70,7 +70,7 @@ spec:
         startupProbe:
           httpGet:
             port: 8000
-            path: /api/v1/
+            path: {{ $.Values.probePath }}
             httpHeaders:
               - name: Host
                 value: {{ $.Values.ingress.host }}
