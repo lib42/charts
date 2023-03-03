@@ -168,6 +168,24 @@ entries:
     urls:
     - https://github.com/lib42/charts/releases/download/deluge-1.0.2/deluge-1.0.2.tgz
     version: 1.0.2
+  jackett:
+  - apiVersion: v2
+    created: "2023-03-03T15:55:50.636751181Z"
+    dependencies:
+    - name: common
+      repository: https://bjw-s.github.io/helm-charts
+      version: 1.2.0
+    description: root-less jackett chart - The API Support for your favorite torrent
+      trackers
+    digest: 0d4468863469479a8e05a926d480542f9d09fd56e1e9377f179d05e011978d72
+    kubeVersion: '>=1.22.0-0'
+    maintainers:
+    - email: nold@gnu.one
+      name: nold
+    name: jackett
+    urls:
+    - https://github.com/lib42/charts/releases/download/jackett-1.0.0/jackett-1.0.0.tgz
+    version: 1.0.0
   machinaris:
   - apiVersion: v2
     appVersion: 0.7.1
@@ -223,4 +241,4 @@ entries:
     urls:
     - https://github.com/lib42/charts/releases/download/squid-1.0.0/squid-1.0.0.tgz
     version: 1.0.0
-generated: "2023-02-03T07:35:40.778936359Z"
+generated: "2023-03-03T15:55:51.050289122Z"
