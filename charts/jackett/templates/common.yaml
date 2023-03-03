@@ -1,0 +1,9 @@
+---
+{{- include "bjw-s.common.loader.init" . }}
+
+{{- define "app.hardcodedValues" -}}
+{{- end -}}
+{{- $_ := mergeOverwrite .Values (include "app.hardcodedValues" . | fromYaml) -}}
+
+{{/* Render the templates */}}
+{{ include "bjw-s.common.loader.generate" . }}
