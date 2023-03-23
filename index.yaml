@@ -184,6 +184,29 @@ entries:
     urls:
     - https://github.com/lib42/charts/releases/download/deluge-1.0.2/deluge-1.0.2.tgz
     version: 1.0.2
+  flaresolverr:
+  - apiVersion: v2
+    created: "2023-03-23T19:38:27.051731752Z"
+    dependencies:
+    - name: common
+      repository: https://bjw-s.github.io/helm-charts
+      version: 1.3.2
+    description: FlareSolverr is a proxy server to bypass Cloudflare protection
+    digest: 654fdbc8326c9d3fed36bc496d4912260dd5b04e08a3096106e128bfc2e54a26
+    home: https://github.com/lib42/charts
+    icon: https://avatars.githubusercontent.com/u/75936191
+    keywords:
+    - torrent
+    - flaresolverr
+    - arrstack
+    kubeVersion: '>=1.22.0-0'
+    maintainers:
+    - email: nold@gnu.one
+      name: nold
+    name: flaresolverr
+    urls:
+    - https://github.com/lib42/charts/releases/download/flaresolverr-1.0.0/flaresolverr-1.0.0.tgz
+    version: 1.0.0
   jackett:
   - apiVersion: v2
     created: "2023-03-03T16:07:33.952030552Z"
@@ -290,4 +313,4 @@ entries:
     urls:
     - https://github.com/lib42/charts/releases/download/squid-1.0.0/squid-1.0.0.tgz
     version: 1.0.0
-generated: "2023-03-03T16:07:34.388733716Z"
+generated: "2023-03-23T19:38:27.653589991Z"
