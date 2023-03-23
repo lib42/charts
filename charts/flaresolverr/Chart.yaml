@@ -1,0 +1,21 @@
+---
+apiVersion: v2
+description: FlareSolverr is a proxy server to bypass Cloudflare protection
+name: flaresolverr
+version: 1.0.0
+kubeVersion: ">=1.22.0-0"
+keywords:
+- torrent
+- flaresolverr
+- arrstack
+icon: https://avatars.githubusercontent.com/u/75936191
+home: https://github.com/lib42/charts
+source:
+- https://github.com/FlareSolverr/FlareSolverr
+maintainers:
+  - name: nold
+    email: nold@gnu.one
+dependencies:
+  - name: common
+    repository: https://bjw-s.github.io/helm-charts
+    version: 1.3.2
