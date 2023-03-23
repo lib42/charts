@@ -6,9 +6,6 @@
 command: [ "/usr/local/bin/deluge-web" ]
 args: [ "-d", "-c", "/config", "-L", "info" ]
 
-podSecurityContext:
-  fsGroup: 1000
-
 securityContext:
   runAsNonRoot: true
   privileged: false
