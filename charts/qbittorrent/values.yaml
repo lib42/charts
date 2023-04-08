@@ -1,0 +1,104 @@
+---
+image:
+  repository: ghcr.io/onedr0p/qbittorrent
+  tag: 4.5.2
+
+podSecurityContext:
+  sysctls:
+    - name: net.ipv6.conf.all.disable_ipv6
+      value: "1"
+  # fsGroup: 1000
+  # fsGroupChangePolicy: "OnRootMismatch"
+  # supplementalGroups:
+  #   - 100
+
+ingress:
+  main:
+    enabled: false
+    # annotations:
+    #   nginx.ingress.kubernetes.io/proxy-body-size: 50m
+    # hosts:
+    #   - host: qbittorrent.local
+    #     paths:
+    #       - path: /
+    #         pathType: Prefix
+    # tls:
+    #   - secretName: qbittorrent-tls
+    #     hosts:
+    #        - qbittorrent.local
+
+service:
+  main:
+    enabled: true
+    ports:
+      http:
+        port: 8080
+
+persistence:
+  config:
+    enabled: true
+    mountPath: /config
+    size: 10M
+
+  # # for custom themes:
+  # theme:
+  #   enabled: false
+  #   mountpath: /theme
+  #   type: emptyDir
+
+  # # example used hostpath instead
+  # downloads:
+  #   enabled: false
+  #   type: hostPath
+  #   hostPath: /data/media/torrent
+  #   mountPath: /downloads
+
+
+## Install custom Theme
+# initContainers:
+#   init-config:
+#     image: alpine/git
+#     args: 
+#       - "clone"
+#       - "--depth"
+#       - "1"
+#       - "https://github.com/dracula/qbittorrent.git"
+#       - "/theme"
+#     volumeMounts:
+#     - name: theme
+#       mountPath: /theme
+#     securityContext:
+#       runAsNonRoot: true
+#       privileged: false
+#       readOnlyRootFilesystem: true
+#       allowPrivilegeEscalation: false
+#       capabilities:
+#         drop:
+#         - ALL
+
+## VPN
+addons:
+  vpn:
+    enabled: false
+
+    #env:
+    #  VPN_SERVICE_PROVIDER: mullvad
+    #  VPN_TYPE: openvpn
+
+    #  DNS_KEEP_NAMESERVER: "on"
+    # DOT: "on"
+    # FIREWALL: "on"
+    # FIREWALL_INPUT_PORTS: "8112,8000"
+    # FIREWALL_VPN_INPUT_PORTS: 61086
+
+    securityContext:
+      capabilities:
+        add:
+          - NET_ADMIN
+
+    livenessProbe:
+      httpGet:
+        path: /v1/openvpn/status
+        port: 8000
+      initialDelaySeconds: 30
+      periodSeconds: 30
