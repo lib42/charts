@@ -1,6 +1,6 @@
 image:
   repository: adguard/adguardhome
-  tag: v0.107.26
+  tag: v0.107.28
   pullPolicy: IfNotPresent
 
 env:
@@ -25,6 +25,7 @@ ingress:
 
 # -- arguments passed to the adguard-home command line.
 args:
+- "/opt/adguardhome/AdGuardHome"
 - "--config"
 - "/opt/adguardhome/conf/AdGuardHome.yaml"
 - "--work-dir"
