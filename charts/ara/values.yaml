@@ -30,11 +30,21 @@ ingress:
   # Ingress Annotations:
   annotations: {}
 
-  # Domain for ara:
-  host: ara.domain
+  ingressClassName: ""
 
-  # Ingress path (has to be changed if ARA_BASE_PATH is non-default).
-  path: /
+  # List of ara ingress hosts
+  hosts:
+  - ara.domain
+
+  # List of ingress paths (has to be changed if ARA_BASE_PATH is non-default).
+  paths:
+  - /
+
+  # Ingress TLS configuration
+  tls: []
+  # - secretName: ara-tls
+  #   hosts:
+  #   - ara.domain
 
 # Resource limits/request
 resources: {}
