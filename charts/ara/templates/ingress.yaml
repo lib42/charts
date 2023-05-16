@@ -7,15 +7,26 @@ metadata:
   annotations:
     {{- toYaml $.Values.ingress.annotations | default dict | nindent 4 }}
 spec:
+  {{- with .Values.ingress.ingressClassName }}
+  ingressClassName: {{ . }}
+  {{- end }}
   rules:
-  - host: {{ $.Values.ingress.host }}
+  {{- range $host := .Values.ingress.hosts }}
+  - host: {{ $host | quote }}
     http:
       paths:
-      - backend:
+      {{- range $p := $.Values.ingress.paths }}
+      - path: {{ $p }}
+        pathType: Prefix
+        backend:
           service:
             name: {{ include "common.fullname" $ }}-service
             port:
-              number: 8000
-        path: {{ $.Values.ingress.path | default "/" }}
-        pathType: Prefix
+              number: 8000 
+      {{- end }}
+  {{- end }}
+  {{- with .Values.ingress.tls }}
+  tls:
+    {{- toYaml . | nindent 4 }}
+  {{- end -}}
 {{- end }}
