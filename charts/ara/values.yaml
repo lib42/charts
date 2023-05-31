@@ -56,3 +56,9 @@ probePath: "/api/v1/"
 persistentVolumes:
   enabled: false
   storageClassName: ""
+
+# Default node selector
+nodeSelector: {}
+
+# Default tolerations
+tolerations: []

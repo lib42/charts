@@ -77,6 +77,14 @@ spec:
           initialDelaySeconds: 30
           failureThreshold: 30
           timeoutSeconds: 1
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       volumes:
       - name: ara
         {{- if $.Values.persistentVolumes.enabled }}
