@@ -354,6 +354,22 @@ entries:
     version: 0.2.0
   squid:
   - apiVersion: v2
+    created: "2023-06-02T15:35:30.402229158Z"
+    dependencies:
+    - name: common
+      repository: https://bjw-s.github.io/helm-charts
+      version: 1.5.0
+    description: Squid HTTP Proxy
+    digest: cd58443b77758e500566e5b6b8833e250c56ebc088dbd275289724fe6aa788c6
+    kubeVersion: '>=1.22.0-0'
+    maintainers:
+    - email: nold@gnu.one
+      name: nold
+    name: squid
+    urls:
+    - https://github.com/lib42/charts/releases/download/squid-1.3.0/squid-1.3.0.tgz
+    version: 1.3.0
+  - apiVersion: v2
     created: "2023-03-03T16:07:34.388657401Z"
     dependencies:
     - name: common
@@ -401,4 +417,4 @@ entries:
     urls:
     - https://github.com/lib42/charts/releases/download/squid-1.0.0/squid-1.0.0.tgz
     version: 1.0.0
-generated: "2023-05-31T06:50:10.107754933Z"
+generated: "2023-06-02T15:35:30.402305323Z"
