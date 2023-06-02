@@ -84,3 +84,17 @@ persistence:
     enabled: true
     type: emptyDir
     mountPath: /var/log/squid
+
+podSecurityContext:
+  runAsUser: 31
+  runAsGroup: 31
+  fsGroup: 31
+
+securityContext:
+  runAsNonRoot: true
+  privileged: false
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
