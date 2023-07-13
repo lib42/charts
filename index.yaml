@@ -2,6 +2,30 @@ apiVersion: v1
 entries:
   adguard-home:
   - apiVersion: v2
+    created: "2023-07-13T07:26:38.83014405Z"
+    dependencies:
+    - name: common
+      repository: https://bjw-s.github.io/helm-charts
+      version: 1.5.1
+    description: DNS proxy as ad-blocker for local network
+    digest: eae48546ffcfb74a99a2c91ebce0107845e48a421458886316ae63d14a2d9a66
+    home: https://github.com/lib42/charts
+    icon: https://avatars.githubusercontent.com/u/8361145
+    keywords:
+    - adguard-home
+    - adblock
+    - dns
+    kubeVersion: '>=1.22.0'
+    maintainers:
+    - email: nold@gnu.one
+      name: nold
+    name: adguard-home
+    sources:
+    - https://github.com/AdguardTeam/AdGuardHome
+    urls:
+    - https://github.com/lib42/charts/releases/download/adguard-home-1.1.0/adguard-home-1.1.0.tgz
+    version: 1.1.0
+  - apiVersion: v2
     created: "2023-04-08T12:42:35.866236096Z"
     dependencies:
     - name: common
@@ -417,4 +441,4 @@ entries:
     urls:
     - https://github.com/lib42/charts/releases/download/squid-1.0.0/squid-1.0.0.tgz
     version: 1.0.0
-generated: "2023-06-02T15:35:30.402305323Z"
+generated: "2023-07-13T07:26:40.263700987Z"
