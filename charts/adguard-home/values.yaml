@@ -23,14 +23,6 @@ ingress:
     #   hosts:
     #   - adguard.home
 
-# -- arguments passed to the adguard-home command line.
-args:
-- "--config"
-- "/opt/adguardhome/conf/AdGuardHome.yaml"
-- "--work-dir"
-- "/opt/adguardhome/work"
-- "--no-check-update"
-
 service:
   main:
     primary: true

@@ -2,8 +2,8 @@
 apiVersion: v2
 description: DNS proxy as ad-blocker for local network
 name: adguard-home
-version: 1.0.0
-kubeVersion: ">=1.22.0-0"
+version: 1.1.0
+kubeVersion: ">=1.22.0"
 maintainers:
   - name: nold
     email: nold@gnu.one
