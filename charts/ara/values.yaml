@@ -50,7 +50,7 @@ ingress:
 resources: {}
 
 # Path for liveness and readiness probes (has to be changed if ARA_BASE_PATH is non-default).
-probePath: "/api/v1/"
+probePath: "/healthcheck/"
 
 # Persistent volume for SQLite DB:
 persistentVolumes:
