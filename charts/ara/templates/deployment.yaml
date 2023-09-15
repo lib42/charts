@@ -15,11 +15,9 @@ spec:
       labels:
         app: ara
     spec:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 2000
-        fsGroup: 2000
+      {{- with .Values.securityContext }}
+      securityContext: {{ toYaml . | nindent 8 }}
+      {{- end }}
       containers:
       - image: {{ $.Values.image }}
         imagePullPolicy: {{ $.Values.pullPolicy | default "IfNotPresent" }}
@@ -77,6 +75,9 @@ spec:
           initialDelaySeconds: 30
           failureThreshold: 30
           timeoutSeconds: 1
+        {{- with .Values.podSecurityContext }}
+        securityContext: {{ toYaml . | nindent 10 }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
