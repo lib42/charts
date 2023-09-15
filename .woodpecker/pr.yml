@@ -1,5 +1,5 @@
 ---
-pipeline:
+steps:
   pr-lint:
     image: alpine/helm
     environment:

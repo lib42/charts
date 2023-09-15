@@ -1,5 +1,5 @@
 ---
-pipeline:
+steps:
   helm-repo:
     image: quay.io/helmpack/chart-releaser
     commands:
