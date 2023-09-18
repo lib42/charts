@@ -14,4 +14,4 @@ name: ara
 sources:
 - https://github.com/ansible-community/ara
 - https://github.com/lib42/charts
-version: 0.4.0
+version: 0.4.1

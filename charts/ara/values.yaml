@@ -69,4 +69,4 @@ securityContext:
   runAsGroup: 2000
   fsGroup: 2000
 
-podSecurityContext: {}
+containerSecurityContext: {}
