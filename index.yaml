@@ -439,6 +439,27 @@ entries:
     urls:
     - https://lib42.github.io/charts/pkg/machinaris-0.2.0.tgz
     version: 0.2.0
+  qbittorrent:
+  - apiVersion: v2
+    created: "2023-09-20T16:38:50.842267009Z"
+    dependencies:
+    - name: common
+      repository: https://bjw-s.github.io/helm-charts
+      version: 1.5.1
+    description: QBittorrent
+    digest: e705cf899eed2f4a971b79c83de5b0c43e138849233ab110de589c4b8b814713
+    home: https://github.com/lib42/charts
+    icon: https://avatars.githubusercontent.com/u/2131270
+    kubeVersion: '>=1.22.0-0'
+    maintainers:
+    - email: nold@gnu.one
+      name: nold
+    name: qbittorrent
+    sources:
+    - https://github.com/qbittorrent/qBittorrent
+    urls:
+    - https://github.com/lib42/charts/releases/download/qbittorrent-1.0.0/qbittorrent-1.0.0.tgz
+    version: 1.0.0
   squid:
   - apiVersion: v2
     created: "2023-06-02T15:35:30.402229158Z"
@@ -504,4 +525,4 @@ entries:
     urls:
     - https://github.com/lib42/charts/releases/download/squid-1.0.0/squid-1.0.0.tgz
     version: 1.0.0
-generated: "2023-09-19T07:11:41.922129299Z"
+generated: "2023-09-20T16:38:51.059159772Z"
