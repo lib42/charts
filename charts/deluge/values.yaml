@@ -1,7 +1,7 @@
 ---
 image:
   repository: lib42/deluge
-  tag: "2"
+  #  tag: "2"
 
 #podSecurityContext:
 #  fsGroup: 1000
