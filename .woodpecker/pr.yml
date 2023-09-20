@@ -1,5 +1,5 @@
 ---
-pipeline:
+steps:
   pr-lint:
     image: alpine/helm
     environment:
@@ -7,13 +7,12 @@ pipeline:
       GIT_USER: $DRONE_COMMIT_AUTHOR
     commands:
     - git fetch --all
-    - git diff main
-    - "export CHART=$(git diff --name-only master | awk -F/ '/^charts/ { print $$2 }' | head -n1)"
+    - "export CHART=$(git diff --name-only origin/main | awk -F/ '/^charts/ { print $$2 }' | head -n1)"
     - "echo Chart: $${CHART}"
-    - >
+    - |
       RET=0
       if [ -n "$$CHART" ] ; then
-        cd charts/${CHART}
+        cd charts/$${CHART}
         helm dependency build
         helm lint
         RET=$?
