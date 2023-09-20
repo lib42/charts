@@ -2,7 +2,7 @@
 apiVersion: v2
 description: FlareSolverr is a proxy server to bypass Cloudflare protection
 name: flaresolverr
-version: 1.0.0
+version: 1.1.0
 kubeVersion: ">=1.22.0-0"
 keywords:
 - torrent
