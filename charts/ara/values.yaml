@@ -70,3 +70,19 @@ securityContext:
   fsGroup: 2000
 
 containerSecurityContext: {}
+
+extraResources: []
+  # - apiVersion: v1
+  #   kind: ConfigMap
+  #   metadata:
+  #     name: example-config
+  #   data:
+  #     key: value
+
+extraDeploy: []
+  # - apiVersion: apps/v1
+  #   kind: Deployment
+  #   metadata:
+  #     name: extra-deployment
+  #   spec:
+  #     # deployment spec here
