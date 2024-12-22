@@ -52,6 +52,27 @@ entries:
   ara:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2024-12-22T10:52:05.713501447Z"
+    description: ARA Records Ansible and makes it easier to understand and troubleshoot.
+    digest: 2212b2abd94a104fe3da7a16d3161be90d3c5ba4e66f1bd3e3a600bba8a96f71
+    home: https://ara.recordsansible.org/
+    icon: https://github.com/ansible-community/ara/raw/master/doc/source/_static/ara-with-icon.png
+    keywords:
+    - awx
+    - ansible
+    - ara
+    maintainers:
+    - email: nold@gnu.one
+      name: Gerrit Pannek
+    name: ara
+    sources:
+    - https://github.com/ansible-community/ara
+    - https://github.com/lib42/charts
+    urls:
+    - https://github.com/lib42/charts/releases/download/ara-0.4.2/ara-0.4.2.tgz
+    version: 0.4.2
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2023-09-19T07:11:40.616834421Z"
     description: ARA Records Ansible and makes it easier to understand and troubleshoot.
     digest: 2c62d67237a6087f118f9a88b3b87ed098ad8b9cebb0ac65c7541ed48b007a9a
@@ -547,4 +568,4 @@ entries:
     urls:
     - https://github.com/lib42/charts/releases/download/squid-1.0.0/squid-1.0.0.tgz
     version: 1.0.0
-generated: "2024-01-29T20:17:50.916268275Z"
+generated: "2024-12-22T10:52:07.063996479Z"
