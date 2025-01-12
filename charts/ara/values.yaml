@@ -2,6 +2,8 @@
 image: docker.io/recordsansible/ara-api:latest
 pullPolicy: IfNotPresent
 
+replicas: 1
+
 # You can configure ARA using Environment Variables
 # See: https://ara.readthedocs.io/en/latest/api-configuration.html
 env: {}
