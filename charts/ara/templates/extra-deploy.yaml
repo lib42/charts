@@ -1,0 +1,6 @@
+{{- if .Values.extraDeploy }}
+{{- range $resource := .Values.extraDeploy }}
+---
+{{ toYaml $resource }}
+{{- end }}
+{{- end }}
