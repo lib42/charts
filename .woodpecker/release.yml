@@ -1,7 +1,7 @@
 ---
 steps:
   helm-repo:
-    image: quay.io/helmpack/chart-releaser
+    image: quay.io/helmpack/chart-releaser@sha256:5cff8ea6db07bc600131fb3a060b988bf6fb7ddf31b91d78efd852403615481c
     commands:
     - git config --global user.email "noreply@lib42.github.io"
     - git config --global user.name "Woodpecker-CI"
