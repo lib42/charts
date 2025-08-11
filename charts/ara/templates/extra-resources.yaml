@@ -1,6 +1,0 @@
-{{- if .Values.extraResources }}
-{{- range $resource := .Values.extraResources }}
----
-{{ toYaml $resource }}
-{{- end }}
-{{- end }}

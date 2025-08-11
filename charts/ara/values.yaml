@@ -71,15 +71,7 @@ securityContext:
 
 containerSecurityContext: {}
 
-extraResources: []
-  # - apiVersion: v1
-  #   kind: ConfigMap
-  #   metadata:
-  #     name: example-config
-  #   data:
-  #     key: value
-
-extraDeploy: []
+extraObjects: []
   # - apiVersion: apps/v1
   #   kind: Deployment
   #   metadata:
