@@ -5,13 +5,13 @@ steps:
     commands:
     - git config --global user.email "noreply@lib42.github.io"
     - git config --global user.name "Woodpecker-CI"
+    - git fetch --all -v
     - mkdir -p ~/.config/helm
     - cp .helmrepos.yaml ~/.config/helm/repositories.yaml
 
     - cr package charts/*
-    - cr upload --owner lib42 --git-repo charts --token $${GH_TOKEN} --skip-existing
+    - cr upload --owner lib42 --git-repo charts --token $${GH_TOKEN} --skip-existing --pages-branch repo --package-path .cr-release-packages
 
-    - git fetch --all
     - git checkout origin/repo
 
     - cr index --owner lib42 --git-repo charts --token $${GH_TOKEN} --pages-branch repo --package-path .cr-release-packages --index-path index.yaml --push
@@ -22,4 +22,6 @@ steps:
         - charts/**
         - .woodpecker/release.yml
       - event: [ "manual", "cron" ]
-    secrets: [ "gh_token" ]
+    environment: 
+      GH_TOKEN:
+        from_secret: "gh_token"

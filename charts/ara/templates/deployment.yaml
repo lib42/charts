@@ -6,7 +6,7 @@ metadata:
   labels:
     app: ara
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
       app: ara
@@ -31,7 +31,7 @@ spec:
         {{- end }}
         {{- if $.Values.resources }}
         resources:
-          {{-  toYaml $.Values.resources | nindent 8 }}
+          {{-  toYaml $.Values.resources | nindent 10 }}
         {{- end }}
         {{- if $.Values.envFromSecret }}
         envFrom:
@@ -44,37 +44,11 @@ spec:
         ports:
           - containerPort: 8000
         livenessProbe:
-          httpGet:
-            port: 8000
-            path: {{ $.Values.probePath }}
-            httpHeaders:
-              - name: Host
-                value: {{ first $.Values.ingress.hosts }}
-          initialDelaySeconds: 30
-          failureThreshold: 3
-          timeoutSeconds: 1
-          periodSeconds: 10
+          {{- tpl (toYaml .Values.livenessProbe) . | nindent 10 }}
         readinessProbe:
-          httpGet:
-            port: 8000
-            path: {{ $.Values.probePath }}
-            httpHeaders:
-              - name: Host
-                value: {{ first $.Values.ingress.hosts }}
-          initialDelaySeconds: 30
-          failureThreshold: 3
-          timeoutSeconds: 1
-          periodSeconds: 10
+          {{- tpl (toYaml .Values.readinessProbe) . | nindent 10 }}
         startupProbe:
-          httpGet:
-            port: 8000
-            path: {{ $.Values.probePath }}
-            httpHeaders:
-              - name: Host
-                value: {{ first $.Values.ingress.hosts }}
-          initialDelaySeconds: 30
-          failureThreshold: 30
-          timeoutSeconds: 1
+          {{- tpl (toYaml .Values.startupProbe) . | nindent 10 }}
         {{- with .Values.containerSecurityContext }}
         securityContext: {{ toYaml . | nindent 10 }}
         {{- end }}
