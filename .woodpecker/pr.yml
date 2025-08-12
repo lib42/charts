@@ -1,7 +1,7 @@
 ---
 steps:
   pr-lint:
-    image: alpine/helm
+    image: alpine/helm@sha256:e7ecbf4a200dea73d64bfb8cb0936829164945f2b4d02a0274093073ee8d264f
     environment:
       USE_SSH: "true"
       GIT_USER: $DRONE_COMMIT_AUTHOR
