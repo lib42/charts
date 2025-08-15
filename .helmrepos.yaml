@@ -8,5 +8,5 @@ repositories:
   name: bjw-s
   pass_credentials_all: false
   password: ""
-  url: https://bjw-s.github.io/helm-charts
+  url: https://bjw-s-labs.github.io/helm-charts
   username: ""
