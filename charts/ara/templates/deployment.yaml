@@ -15,19 +15,9 @@ spec:
       labels:
         app: ara
     spec:
-      {{- if gt .Values.replicas 1 }}
+      {{- with .Values.affinity }}
       affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - podAffinityTerm:
-                labelSelector:
-                  matchExpressions:
-                    - key: app
-                      operator: In
-                      values:
-                        - ara
-                topologyKey: kubernetes.io/hostname
-              weight: 1
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.securityContext }}
       securityContext: {{ toYaml . | nindent 8 }}

@@ -93,6 +93,9 @@ persistentVolumes:
   enabled: false
   storageClassName: ""
 
+# Default affinity
+affinity: {}
+
 # Default node selector
 nodeSelector: {}
 
