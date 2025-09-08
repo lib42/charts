@@ -2,7 +2,7 @@
 apiVersion: v2
 description: DNS proxy as ad-blocker for local network
 name: adguard-home
-version: 1.1.0
+version: 2.0.0
 kubeVersion: ">=1.22.0"
 maintainers:
   - name: nold
@@ -13,8 +13,8 @@ home: https://github.com/lib42/charts
 icon: https://avatars.githubusercontent.com/u/8361145
 dependencies:
   - name: common
-    repository: https://bjw-s.github.io/helm-charts
-    version: 1.5.1
+    repository: https://bjw-s-labs.github.io/helm-charts
+    version: 4.2.0
 keywords:
   - adguard-home
   - adblock
