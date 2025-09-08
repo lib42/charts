@@ -2,18 +2,6 @@
 {{- include "bjw-s.common.loader.init" . }}
 
 {{- define "app.hardcodedValues" -}}
-persistence:
-  config:
-    name: {{ include "bjw-s.common.lib.chart.names.fullname" . -}}-config
-    enabled: true
-    type: configMap
-    mountPath: /etc/squid/squid.conf
-    subPath: squid.conf
-
-  varrun:
-    enabled: true
-    type: emptyDir
-    mountPath: /var/run
 {{- end -}}
 {{- $_ := mergeOverwrite .Values (include "app.hardcodedValues" . | fromYaml) -}}
 
