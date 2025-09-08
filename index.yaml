@@ -2,6 +2,30 @@ apiVersion: v1
 entries:
   adguard-home:
   - apiVersion: v2
+    created: "2025-09-08T11:06:43.613735062Z"
+    dependencies:
+    - name: common
+      repository: https://bjw-s-labs.github.io/helm-charts
+      version: 4.2.0
+    description: DNS proxy as ad-blocker for local network
+    digest: 5046b37b5688ad616c98aab3fab36d1a691ea26ea2fd7b4a471330cb500c73ef
+    home: https://github.com/lib42/charts
+    icon: https://avatars.githubusercontent.com/u/8361145
+    keywords:
+    - adguard-home
+    - adblock
+    - dns
+    kubeVersion: '>=1.22.0'
+    maintainers:
+    - email: nold@gnu.one
+      name: nold
+    name: adguard-home
+    sources:
+    - https://github.com/AdguardTeam/AdGuardHome
+    urls:
+    - https://github.com/lib42/charts/releases/download/adguard-home-2.0.0/adguard-home-2.0.0.tgz
+    version: 2.0.0
+  - apiVersion: v2
     created: "2023-07-13T07:26:38.83014405Z"
     dependencies:
     - name: common
@@ -50,6 +74,27 @@ entries:
     - https://github.com/lib42/charts/releases/download/adguard-home-1.0.0/adguard-home-1.0.0.tgz
     version: 1.0.0
   ara:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2025-09-08T11:06:43.939587036Z"
+    description: ARA Records Ansible and makes it easier to understand and troubleshoot.
+    digest: c97a35563772622f2d672cc4e789de5f34d109cc686f85df14c33060b4699647
+    home: https://ara.recordsansible.org/
+    icon: https://github.com/ansible-community/ara/raw/master/doc/source/_static/ara-with-icon.png
+    keywords:
+    - awx
+    - ansible
+    - ara
+    maintainers:
+    - email: nold@gnu.one
+      name: Gerrit Pannek
+    name: ara
+    sources:
+    - https://github.com/ansible-community/ara
+    - https://github.com/lib42/charts
+    urls:
+    - https://github.com/lib42/charts/releases/download/ara-0.4.6/ara-0.4.6.tgz
+    version: 0.4.6
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2025-01-12T16:03:53.900746148Z"
@@ -424,6 +469,29 @@ entries:
     version: 1.0.2
   flaresolverr:
   - apiVersion: v2
+    appVersion: v3.4.0
+    created: "2025-09-08T11:06:44.539755579Z"
+    dependencies:
+    - name: common
+      repository: https://bjw-s-labs.github.io/helm-charts
+      version: 4.2.0
+    description: FlareSolverr is a proxy server to bypass Cloudflare protection
+    digest: b87d1a644e8a133f6cda9b87f5b7caa84ad26a3f946740ac0f1d6f7b118bc562
+    home: https://github.com/lib42/charts
+    icon: https://avatars.githubusercontent.com/u/75936191
+    keywords:
+    - torrent
+    - flaresolverr
+    - arrstack
+    kubeVersion: '>=1.22.0-0'
+    maintainers:
+    - email: nold@gnu.one
+      name: nold
+    name: flaresolverr
+    urls:
+    - https://github.com/lib42/charts/releases/download/flaresolverr-2.0.0/flaresolverr-2.0.0.tgz
+    version: 2.0.0
+  - apiVersion: v2
     created: "2024-01-29T20:17:50.195807175Z"
     dependencies:
     - name: common
@@ -547,6 +615,22 @@ entries:
     version: 1.0.0
   squid:
   - apiVersion: v2
+    created: "2025-09-08T11:06:45.222288991Z"
+    dependencies:
+    - name: common
+      repository: https://bjw-s-labs.github.io/helm-charts
+      version: 4.2.0
+    description: Squid HTTP Proxy
+    digest: afa503298bbaf55654cde122d7e6564cdcdb1ce7b03bd534bb94e61f78fbbc40
+    kubeVersion: '>=1.22.0-0'
+    maintainers:
+    - email: nold@gnu.one
+      name: nold
+    name: squid
+    urls:
+    - https://github.com/lib42/charts/releases/download/squid-2.0.0/squid-2.0.0.tgz
+    version: 2.0.0
+  - apiVersion: v2
     created: "2023-06-02T15:35:30.402229158Z"
     dependencies:
     - name: common
@@ -610,4 +694,4 @@ entries:
     urls:
     - https://github.com/lib42/charts/releases/download/squid-1.0.0/squid-1.0.0.tgz
     version: 1.0.0
-generated: "2025-01-12T16:03:55.710735055Z"
+generated: "2025-09-08T11:06:45.222419717Z"
