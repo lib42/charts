@@ -1,5 +1,5 @@
 # Values for lib42/ara Helm Chart
-image: docker.io/recordsansible/ara-api:latest
+image: docker.io/recordsansible/ara-api:latest@sha256:435dbcc0154b0494f245d79ec1c20af3b8f0d31bccf010522dc6125e08e7691d
 pullPolicy: IfNotPresent
 
 replicas: 1
